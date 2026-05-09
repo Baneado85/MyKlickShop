@@ -1,0 +1,891 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Klick Shop — Hallazgos que transforman</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #050505;
+    --paper: #f8fafc;
+    --accent: #0084FF;
+    --accent-light: #33a1ff;
+    --accent-dark: #0050ff;
+    --white: #ffffff;
+    --muted: #94a3b8;
+    --line: rgba(0, 132, 255, 0.15);
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--ink);
+    color: var(--paper);
+    font-family: 'Poppins', sans-serif;
+    font-weight: 300;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+  /* NOISE TEXTURE */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 100;
+    opacity: 0.4;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 50;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.2rem 3rem;
+    background: linear-gradient(to bottom, rgba(5,5,5,0.95) 0%, transparent 100%);
+    backdrop-filter: blur(10px);
+  }
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    text-decoration: none;
+  }
+  .logo img {
+    height: 32px;
+    width: auto;
+  }
+  .logo-text {
+    font-size: 1.1rem;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    color: var(--accent);
+  }
+  .logo-text span { color: var(--paper); font-weight: 400; }
+  nav ul { list-style: none; display: flex; gap: 2.5rem; }
+  nav ul li a {
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-decoration: none;
+    transition: color 0.3s;
+  }
+  nav ul li a:hover { color: var(--accent); }
+  .nav-cta {
+    font-size: 0.75rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--white);
+    background: var(--accent);
+    padding: 0.6rem 1.4rem;
+    border-radius: 4px;
+    text-decoration: none;
+    transition: all 0.3s;
+    font-weight: 600;
+  }
+  .nav-cta:hover { background: var(--accent-light); box-shadow: 0 0 20px rgba(0, 132, 255, 0.4); }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-left {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 8rem 4rem 6rem 5rem;
+    position: relative;
+    z-index: 2;
+  }
+  .hero-eyebrow {
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 2rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  .hero-eyebrow::before {
+    content: '';
+    display: block;
+    width: 40px;
+    height: 1px;
+    background: var(--accent);
+  }
+  .hero-title {
+    font-size: clamp(3rem, 5vw, 5rem);
+    font-weight: 700;
+    line-height: 1.1;
+    margin-bottom: 1.5rem;
+    letter-spacing: -0.03em;
+  }
+  .hero-title em {
+    font-style: normal;
+    color: var(--accent);
+  }
+  .hero-subtitle {
+    font-size: 1rem;
+    color: var(--muted);
+    max-width: 440px;
+    line-height: 1.8;
+    margin-bottom: 3rem;
+  }
+  .hero-actions { display: flex; gap: 1rem; align-items: center; }
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    background: var(--accent);
+    color: var(--white);
+    padding: 1rem 2rem;
+    font-size: 0.8rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    text-decoration: none;
+    border-radius: 4px;
+    font-weight: 600;
+    transition: all 0.3s;
+    box-shadow: 0 4px 15px rgba(0, 132, 255, 0.2);
+  }
+  .btn-primary:hover { background: var(--accent-light); transform: translateY(-2px); box-shadow: 0 8px 25px rgba(0, 132, 255, 0.3); }
+  .btn-primary svg { transition: transform 0.3s; }
+  .btn-primary:hover svg { transform: translateX(4px); }
+  .btn-ghost {
+    font-size: 0.8rem;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-decoration: none;
+    border-bottom: 1px solid var(--line);
+    padding-bottom: 2px;
+    transition: all 0.3s;
+  }
+  .btn-ghost:hover { color: var(--paper); border-color: var(--accent); }
+
+  .hero-right {
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-image-grid {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    gap: 4px;
+    opacity: 0.65;
+  }
+  .hero-img-cell {
+    background: var(--ink);
+    overflow: hidden;
+    position: relative;
+  }
+  .hero-img-cell img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 8s ease;
+  }
+  .hero-img-cell:hover img { transform: scale(1.05); }
+  .hero-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(105deg, var(--ink) 30%, transparent 60%);
+    z-index: 1;
+  }
+  /* Decorative vertical line */
+  .hero::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 15%;
+    bottom: 15%;
+    width: 1px;
+    background: linear-gradient(to bottom, transparent, var(--line), transparent);
+    z-index: 3;
+  }
+  .hero-stat-row {
+    display: flex;
+    gap: 3rem;
+    margin-top: 4rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--line);
+  }
+  .hero-stat {}
+  .hero-stat-num {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--accent);
+    display: block;
+    letter-spacing: -0.02em;
+  }
+  .hero-stat-label {
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-top: 0.2rem;
+  }
+
+  /* MARQUEE */
+  .marquee-strip {
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    padding: 1rem 0;
+    overflow: hidden;
+    background: rgba(0, 132, 255, 0.04);
+  }
+  .marquee-track {
+    display: flex;
+    gap: 3rem;
+    animation: marquee 28s linear infinite;
+    white-space: nowrap;
+  }
+  @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+  .marquee-item {
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    flex-shrink: 0;
+  }
+  .marquee-item::after { content: '✦'; color: var(--accent); font-size: 0.5rem; }
+
+  /* ABOUT */
+  .about {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 8rem 3rem;
+    display: grid;
+    grid-template-columns: 1fr 1.4fr;
+    gap: 6rem;
+    align-items: center;
+  }
+  .section-label {
+    font-size: 0.65rem;
+    font-weight: 600;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+  }
+  .section-label::before {
+    content: '';
+    display: block;
+    width: 24px;
+    height: 1px;
+    background: var(--accent);
+  }
+  .about-heading {
+    font-size: clamp(2rem, 3.5vw, 3.2rem);
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+  }
+  .about-heading em { font-style: normal; color: var(--accent); }
+  .about-right p {
+    font-size: 1rem;
+    color: var(--muted);
+    line-height: 1.9;
+    margin-bottom: 1.5rem;
+  }
+  .about-right p strong { color: var(--paper); font-weight: 500; }
+  .pill-row { display: flex; flex-wrap: wrap; gap: 0.6rem; margin-top: 2rem; }
+  .pill {
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    border: 1px solid var(--line);
+    color: var(--muted);
+    padding: 0.45rem 1rem;
+    border-radius: 4px;
+    transition: all 0.3s;
+  }
+  .pill:hover { border-color: var(--accent); color: var(--accent); background: rgba(0, 132, 255, 0.05); }
+
+  /* FEATURES */
+  .features {
+    padding: 5rem 3rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+    background: var(--line);
+    border: 1px solid var(--line);
+  }
+  .feature {
+    background: var(--ink);
+    padding: 3rem 2.5rem;
+    position: relative;
+    overflow: hidden;
+    transition: background 0.4s;
+  }
+  .feature::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: var(--accent);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.4s;
+  }
+  .feature:hover::before { transform: scaleX(1); }
+  .feature:hover { background: rgba(0, 132, 255, 0.06); }
+  .feature-number {
+    font-size: 3rem;
+    font-weight: 700;
+    color: var(--line);
+    line-height: 1;
+    margin-bottom: 1.5rem;
+    letter-spacing: -0.05em;
+  }
+  .feature h3 {
+    font-size: 1.3rem;
+    font-weight: 600;
+    margin-bottom: 0.8rem;
+    color: var(--paper);
+    letter-spacing: -0.01em;
+  }
+  .feature p {
+    font-size: 0.9rem;
+    color: var(--muted);
+    line-height: 1.7;
+  }
+
+  /* PRODUCTS */
+  .products-section {
+    padding: 8rem 3rem;
+    max-width: 1280px;
+    margin: 0 auto;
+  }
+  .products-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 4rem;
+  }
+  .products-heading {
+    font-size: clamp(2rem, 3vw, 2.8rem);
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: -0.03em;
+  }
+  .products-heading em { font-style: normal; color: var(--accent); }
+  .see-all {
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--accent);
+    text-decoration: none;
+    border-bottom: 1px solid var(--accent);
+    padding-bottom: 2px;
+    white-space: nowrap;
+    transition: opacity 0.3s;
+  }
+  .see-all:hover { opacity: 0.7; }
+  .products-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.5rem;
+  }
+  .product-card {
+    position: relative;
+    cursor: pointer;
+    group: true;
+  }
+  .product-img {
+    aspect-ratio: 3/4;
+    background: #0f172a;
+    border: 1px solid var(--line);
+    overflow: hidden;
+    position: relative;
+    margin-bottom: 1rem;
+    border-radius: 4px;
+  }
+  .product-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.6s ease;
+    filter: brightness(0.9);
+  }
+  .product-card:hover .product-img img { transform: scale(1.06); filter: brightness(1.1); }
+  .product-badge {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    font-size: 0.6rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    background: var(--accent);
+    color: var(--white);
+    padding: 0.3rem 0.7rem;
+    border-radius: 2px;
+  }
+  .product-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(5,5,5,0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.4s;
+    backdrop-filter: blur(4px);
+  }
+  .product-card:hover .product-overlay { opacity: 1; }
+  .product-overlay-btn {
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--white);
+    background: var(--accent);
+    padding: 0.7rem 1.5rem;
+    text-decoration: none;
+    transform: translateY(10px);
+    transition: transform 0.3s;
+    border-radius: 4px;
+  }
+  .product-card:hover .product-overlay-btn { transform: translateY(0); }
+  .product-category {
+    font-size: 0.65rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 0.3rem;
+  }
+  .product-name {
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: var(--paper);
+    margin-bottom: 0.4rem;
+    letter-spacing: -0.01em;
+  }
+  .product-price {
+    font-size: 0.85rem;
+    color: var(--muted);
+  }
+
+  /* PHILOSOPHY */
+  .philosophy {
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    padding: 7rem 3rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .philosophy::before {
+    content: '';
+    position: absolute;
+    top: -200px; left: 50%;
+    transform: translateX(-50%);
+    width: 600px; height: 600px;
+    background: radial-gradient(ellipse, rgba(0, 132, 255, 0.06) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .philosophy-quote {
+    font-size: clamp(1.6rem, 3.5vw, 3rem);
+    font-weight: 600;
+    line-height: 1.4;
+    max-width: 900px;
+    margin: 0 auto 2rem;
+    letter-spacing: -0.02em;
+  }
+  .philosophy-quote em { font-style: normal; color: var(--accent); }
+  .philosophy-attr {
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  /* NEWSLETTER */
+  .newsletter {
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 7rem 3rem;
+    text-align: center;
+  }
+  .newsletter h2 {
+    font-size: 2.2rem;
+    font-weight: 700;
+    margin-bottom: 0.8rem;
+    letter-spacing: -0.03em;
+  }
+  .newsletter h2 em { font-style: normal; color: var(--accent); }
+  .newsletter p {
+    font-size: 0.95rem;
+    color: var(--muted);
+    margin-bottom: 2.5rem;
+    line-height: 1.7;
+  }
+  .newsletter-form {
+    display: flex;
+    gap: 0.5rem;
+    max-width: 480px;
+    margin: 0 auto;
+  }
+  .newsletter-form input {
+    flex: 1;
+    background: rgba(0, 132, 255, 0.03);
+    border: 1px solid var(--line);
+    color: var(--paper);
+    padding: 0.9rem 1.3rem;
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.9rem;
+    outline: none;
+    border-radius: 4px;
+    transition: all 0.3s;
+  }
+  .newsletter-form input::placeholder { color: var(--muted); }
+  .newsletter-form input:focus { border-color: var(--accent); background: rgba(0, 132, 255, 0.06); }
+  .newsletter-form button {
+    background: var(--accent);
+    color: var(--white);
+    border: none;
+    padding: 0.9rem 1.8rem;
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.3s;
+    border-radius: 4px;
+  }
+  .newsletter-form button:hover { background: var(--accent-light); box-shadow: 0 0 15px rgba(0, 132, 255, 0.3); }
+
+  /* FOOTER */
+  footer {
+    border-top: 1px solid var(--line);
+    padding: 3rem 5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .footer-logo {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--accent);
+    letter-spacing: -0.01em;
+  }
+  .footer-logo img { height: 24px; }
+  .footer-logo span { color: var(--paper); font-weight: 400; }
+  .footer-links { display: flex; gap: 2rem; }
+  .footer-links a {
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-decoration: none;
+    transition: color 0.3s;
+  }
+  .footer-links a:hover { color: var(--accent); }
+  .footer-copy {
+    font-size: 0.7rem;
+    color: var(--muted);
+    letter-spacing: 0.05em;
+  }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .fade-up { opacity: 0; animation: fadeUp 0.8s ease forwards; }
+  .delay-1 { animation-delay: 0.1s; }
+  .delay-2 { animation-delay: 0.25s; }
+  .delay-3 { animation-delay: 0.4s; }
+  .delay-4 { animation-delay: 0.6s; }
+  .delay-5 { animation-delay: 0.8s; }
+
+  @media (max-width: 900px) {
+    nav { padding: 1.2rem 1.5rem; }
+    nav ul, .nav-cta { display: none; }
+    .hero { grid-template-columns: 1fr; min-height: auto; }
+    .hero-left { padding: 7rem 2rem 3rem; }
+    .hero-right { height: 300px; }
+    .about { grid-template-columns: 1fr; gap: 2rem; padding: 4rem 2rem; }
+    .features { grid-template-columns: 1fr; padding: 2rem; }
+    .products-grid { grid-template-columns: 1fr 1fr; }
+    .products-section { padding: 4rem 2rem; }
+    footer { flex-direction: column; gap: 1.5rem; text-align: center; padding: 2rem; }
+    .footer-links { flex-wrap: wrap; justify-content: center; }
+    .hero-stat-row { gap: 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="logo">
+    <img src="Logo.png" alt="My Klick Shop Logo">
+    <div class="logo-text">My <span>Klick</span> Shop</div>
+  </a>
+  <ul>
+    <li><a href="#catalogo">Catálogo</a></li>
+    <li><a href="#nosotros">Nosotros</a></li>
+    <li><a href="#novedades">Novedades</a></li>
+    <li><a href="#contacto">Contacto</a></li>
+  </ul>
+  <a href="#catalogo" class="nav-cta">Explorar</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-left">
+    <p class="hero-eyebrow fade-up delay-1">Selección Digital · 2026</p>
+    <h1 class="hero-title fade-up delay-2">
+      Hallazgos que<br><em>transforman</em><br>lo ordinario
+    </h1>
+    <p class="hero-subtitle fade-up delay-3">
+      Recorremos el mercado global para traerte productos y herramientas que aún no encuentra todo el mundo. Lo extraordinario aparece primero para quienes saben dónde mirar.
+    </p>
+    <div class="hero-actions fade-up delay-4">
+      <a href="#catalogo" class="btn-primary">
+        Descubrir ahora
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+      <a href="#nosotros" class="btn-ghost">Nuestra historia</a>
+    </div>
+    <div class="hero-stat-row fade-up delay-5">
+      <div class="hero-stat">
+        <span class="hero-stat-num">500+</span>
+        <span class="hero-stat-label">Productos curados</span>
+      </div>
+      <div class="hero-stat">
+        <span class="hero-stat-num">40+</span>
+        <span class="hero-stat-label">Países explorados</span>
+      </div>
+      <div class="hero-stat">
+        <span class="hero-stat-num">100%</span>
+        <span class="hero-stat-label">Anti-genérico</span>
+      </div>
+    </div>
+  </div>
+  <div class="hero-right">
+    <div class="hero-image-grid">
+      <div class="hero-img-cell"><img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400&q=80" alt="Reloj de diseño"></div>
+      <div class="hero-img-cell"><img src="https://images.unsplash.com/photo-1491553895911-0055eca6402d?w=400&q=80" alt="Gadget moderno"></div>
+      <div class="hero-img-cell"><img src="https://images.unsplash.com/photo-1585386959984-a4155224a1ad?w=400&q=80" alt="Producto de diseño"></div>
+      <div class="hero-img-cell"><img src="https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?w=400&q=80" alt="Innovación"></div>
+    </div>
+    <div class="hero-overlay"></div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-strip">
+  <div class="marquee-track">
+    <span class="marquee-item">Diseño excepcional</span>
+    <span class="marquee-item">Funcionalidad real</span>
+    <span class="marquee-item">Visión de futuro</span>
+    <span class="marquee-item">Selección global</span>
+    <span class="marquee-item">Anti-genérico</span>
+    <span class="marquee-item">Cada klick vale</span>
+    <span class="marquee-item">Diseño excepcional</span>
+    <span class="marquee-item">Funcionalidad real</span>
+    <span class="marquee-item">Visión de futuro</span>
+    <span class="marquee-item">Selección global</span>
+    <span class="marquee-item">Anti-genérico</span>
+    <span class="marquee-item">Cada klick vale</span>
+  </div>
+</div>
+
+<!-- FEATURES -->
+<div style="max-width:1200px; margin:0 auto; padding: 6rem 3rem 2rem;">
+  <p class="section-label">Por qué My Klick Shop</p>
+</div>
+<div class="features" style="margin: 0 3rem; max-width:1200px; margin-left:auto; margin-right:auto;">
+  <div class="feature">
+    <div class="feature-number">01</div>
+    <h3>Curación sin compromiso</h3>
+    <p>Cada producto pasa por un proceso de selección exigente. Si no nos sorprende a nosotros, no llega a ti.</p>
+  </div>
+  <div class="feature">
+    <div class="feature-number">02</div>
+    <h3>Hallazgos antes que todos</h3>
+    <p>Rastreamos tendencias globales antes de que lleguen al mainstream. Aquí lo descubres primero.</p>
+  </div>
+  <div class="feature">
+    <div class="feature-number">03</div>
+    <h3>Diseño con propósito</h3>
+    <p>No creemos en lo decorativo vacío. Cada pieza combina estética con función real y duración en el tiempo.</p>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<section class="about" id="nosotros">
+  <div class="about-left">
+    <p class="section-label">Nuestra esencia</p>
+    <h2 class="about-heading">
+      Lo extraordinario aparece primero para quienes <em>saben dónde mirar</em>
+    </h2>
+  </div>
+  <div class="about-right">
+    <p>En <strong>My Klick Shop</strong>, somos una plataforma guiada por la exploración. Recorremos el mercado global para seleccionar productos y herramientas —físicas y digitales— que destacan por su diseño, funcionalidad y visión de futuro.</p>
+    <p>No creemos en lo genérico ni en lo saturado. Creemos en <strong>conectar personas con aquello que todavía no encuentra todo el mundo</strong>, porque lo extraordinario siempre aparece antes para quienes saben dónde mirar.</p>
+    <p>Cada artículo que llega a nuestra plataforma pasa por un proceso de selección enfocado en una sola cosa: <strong>ofrecerte hallazgos que realmente valgan cada "klick"</strong>.</p>
+    <div class="pill-row">
+      <span class="pill">Innovación</span>
+      <span class="pill">Diseño</span>
+      <span class="pill">Funcionalidad</span>
+      <span class="pill">Selección global</span>
+      <span class="pill">Visión de futuro</span>
+    </div>
+  </div>
+</section>
+
+<!-- PRODUCTS -->
+<section class="products-section" id="catalogo">
+  <div class="products-header">
+    <div>
+      <p class="section-label">Selección actual</p>
+      <h2 class="products-heading">Hallazgos <em>recientes</em></h2>
+    </div>
+    <a href="#" class="see-all">Ver catálogo completo →</a>
+  </div>
+  <div class="products-grid">
+    <div class="product-card">
+      <div class="product-img">
+        <span class="product-badge">Nuevo</span>
+        <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=600&q=80" alt="Reloj de diseño">
+        <div class="product-overlay">
+          <a href="#" class="product-overlay-btn">Ver detalle</a>
+        </div>
+      </div>
+      <p class="product-category">Accesorios</p>
+      <h3 class="product-name">Reloj Minimalista Pro</h3>
+      <p class="product-price">Desde S/ 189</p>
+    </div>
+    <div class="product-card">
+      <div class="product-img">
+        <span class="product-badge">Destacado</span>
+        <img src="https://images.unsplash.com/photo-1585386959984-a4155224a1ad?w=600&q=80" alt="Set de cuidado">
+        <div class="product-overlay">
+          <a href="#" class="product-overlay-btn">Ver detalle</a>
+        </div>
+      </div>
+      <p class="product-category">Bienestar</p>
+      <h3 class="product-name">Set Ritual Nocturno</h3>
+      <p class="product-price">Desde S/ 129</p>
+    </div>
+    <div class="product-card">
+      <div class="product-img">
+        <img src="https://images.unsplash.com/photo-1491553895911-0055eca6402d?w=600&q=80" alt="Gadget tech">
+        <div class="product-overlay">
+          <a href="#" class="product-overlay-btn">Ver detalle</a>
+        </div>
+      </div>
+      <p class="product-category">Tech</p>
+      <h3 class="product-name">Cargador 3-en-1 Magnético</h3>
+      <p class="product-price">Desde S/ 95</p>
+    </div>
+    <div class="product-card">
+      <div class="product-img">
+        <span class="product-badge">Agotándose</span>
+        <img src="https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?w=600&q=80" alt="Cámara diseño">
+        <div class="product-overlay">
+          <a href="#" class="product-overlay-btn">Ver detalle</a>
+        </div>
+      </div>
+      <p class="product-category">Lifestyle</p>
+      <h3 class="product-name">Cámara Instantánea Retro</h3>
+      <p class="product-price">Desde S/ 245</p>
+    </div>
+  </div>
+</section>
+
+<!-- PHILOSOPHY -->
+<section class="philosophy">
+  <p class="section-label" style="justify-content:center; margin-bottom:2.5rem;">Nuestra filosofía</p>
+  <blockquote class="philosophy-quote">
+    "No vendemos productos. Compartimos <em>descubrimientos</em> que transforman la manera de conectar con nuevas experiencias."
+  </blockquote>
+  <p class="philosophy-attr">— My Klick Shop</p>
+</section>
+
+<!-- NEWSLETTER -->
+<section class="newsletter" id="novedades">
+  <p class="section-label" style="justify-content:center; margin-bottom:1.5rem;">Novedades</p>
+  <h2>Sé el primero en <em>descubrirlo</em></h2>
+  <p>Los hallazgos más interesantes llegan primero a quienes están atentos. Únete y recibe selecciones exclusivas antes que nadie.</p>
+  <form class="newsletter-form" onsubmit="return false;">
+    <input type="email" placeholder="tu@correo.com">
+    <button type="submit">Suscribirme</button>
+  </form>
+</section>
+
+<!-- FOOTER -->
+<footer id="contacto">
+  <div class="footer-logo">
+    <img src="Logo.png" alt="My Klick Shop Logo">
+    <div class="logo-text">My <span>Klick</span> Shop</div>
+  </div>
+  <div class="footer-links">
+    <a href="#">Catálogo</a>
+    <a href="#">Nosotros</a>
+    <a href="#">Política de envíos</a>
+    <a href="#">Privacidad</a>
+    <a href="#">Contacto</a>
+  </div>
+  <p class="footer-copy">© 2026 My Klick Shop. Todos los derechos reservados.</p>
+</footer>
+
+<script>
+// Scroll reveal
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.style.opacity = '1';
+      entry.target.style.transform = 'translateY(0)';
+    }
+  });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.feature, .product-card, .about-left, .about-right').forEach(el => {
+  el.style.opacity = '0';
+  el.style.transform = 'translateY(24px)';
+  el.style.transition = 'opacity 0.7s ease, transform 0.7s ease';
+  observer.observe(el);
+});
+</script>
+
+</body>
+</html>

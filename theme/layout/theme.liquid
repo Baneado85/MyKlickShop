@@ -1,0 +1,80 @@
+<section class="hero">
+  <div class="hero-left">
+    <p class="hero-eyebrow fade-up delay-1">{{ section.settings.eyebrow }}</p>
+    <h1 class="hero-title fade-up delay-2">
+      {{ section.settings.title_part_1 }}<br><em>{{ section.settings.title_accent }}</em><br>{{ section.settings.title_part_2 }}
+    </h1>
+    <p class="hero-subtitle fade-up delay-3">
+      {{ section.settings.subtitle }}
+    </p>
+    <div class="hero-actions fade-up delay-4">
+      <a href="{{ section.settings.button_link }}" class="btn-primary">
+        {{ section.settings.button_text }}
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+      {% if section.settings.ghost_button_text != blank %}
+        <a href="{{ section.settings.ghost_button_link }}" class="btn-ghost">{{ section.settings.ghost_button_text }}</a>
+      {% endif %}
+    </div>
+    <div class="hero-stat-row fade-up delay-5">
+      {% for block in section.blocks %}
+        <div class="hero-stat">
+          <span class="hero-stat-num">{{ block.settings.number }}</span>
+          <span class="hero-stat-label">{{ block.settings.label }}</span>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+  <div class="hero-right">
+    <div class="hero-image-grid">
+      {% if section.settings.image_1 %}
+        <div class="hero-img-cell"><img src="{{ section.settings.image_1 | img_url: '800x' }}" alt=""></div>
+      {% else %}
+        <div class="hero-img-cell"><img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400&q=80" alt=""></div>
+      {% endif %}
+      <div class="hero-img-cell"><img src="https://images.unsplash.com/photo-1491553895911-0055eca6402d?w=400&q=80" alt=""></div>
+      <div class="hero-img-cell"><img src="https://images.unsplash.com/photo-1585386959984-a4155224a1ad?w=400&q=80" alt=""></div>
+      <div class="hero-img-cell"><img src="https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?w=400&q=80" alt=""></div>
+    </div>
+    <div class="hero-overlay"></div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Hero Section",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow text", "default": "Selección Digital · 2026" },
+    { "type": "text", "id": "title_part_1", "label": "Title Part 1", "default": "Hallazgos que" },
+    { "type": "text", "id": "title_accent", "label": "Accent Title", "default": "transforman" },
+    { "type": "text", "id": "title_part_2", "label": "Title Part 2", "default": "lo ordinario" },
+    { "type": "textarea", "id": "subtitle", "label": "Subtitle", "default": "Recorremos el mercado global para traerte productos y herramientas que aún no encuentra todo el mundo." },
+    { "type": "text", "id": "button_text", "label": "Button Text", "default": "Descubrir ahora" },
+    { "type": "url", "id": "button_link", "label": "Button Link" },
+    { "type": "text", "id": "ghost_button_text", "label": "Ghost Button Text", "default": "Nuestra historia" },
+    { "type": "url", "id": "ghost_button_link", "label": "Ghost Button Link" },
+    { "type": "image_picker", "id": "image_1", "label": "Main Hero Image" }
+  ],
+  "blocks": [
+    {
+      "type": "stat",
+      "name": "Stat",
+      "limit": 3,
+      "settings": [
+        { "type": "text", "id": "number", "label": "Number", "default": "500+" },
+        { "type": "text", "id": "label", "label": "Label", "default": "Productos curados" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Hero Section",
+      "blocks": [
+        { "type": "stat" },
+        { "type": "stat" },
+        { "type": "stat" }
+      ]
+    }
+  ]
+}
+{% endschema %}
