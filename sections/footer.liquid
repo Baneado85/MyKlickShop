@@ -1,0 +1,22 @@
+<footer id="contacto">
+  <div class="footer-logo">
+    <div class="logo-text">{{ section.settings.logo_text | replace: 'Klick', '<span>Klick</span>' }}</div>
+  </div>
+  <div class="footer-links">
+    {% for link in linklists[section.settings.menu].links %}
+      <a href="{{ link.url }}">{{ link.title }}</a>
+    {% endfor %}
+  </div>
+  <p class="footer-copy">{{ section.settings.copyright }}</p>
+</footer>
+
+{% schema %}
+{
+  "name": "Footer",
+  "settings": [
+    { "type": "text", "id": "logo_text", "label": "Logo Text", "default": "My Klick Shop" },
+    { "type": "link_list", "id": "menu", "label": "Footer Menu", "default": "footer" },
+    { "type": "text", "id": "copyright", "label": "Copyright Text", "default": "© 2026 My Klick Shop. Todos los derechos reservados." }
+  ]
+}
+{% endschema %}
