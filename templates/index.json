@@ -1,0 +1,15 @@
+{
+  "sections": {
+    "hero": {
+      "type": "hero",
+      "settings": {
+        "title_part_1": "Hallazgos que",
+        "title_accent": "transforman",
+        "title_part_2": "lo ordinario"
+      }
+    }
+  },
+  "order": [
+    "hero"
+  ]
+}
